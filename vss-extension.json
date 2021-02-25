@@ -1,0 +1,62 @@
+{
+  "manifestVersion": 1,
+  "id": "artifactz-azure-devops-extension",
+  "name": "Artifactz.io Azure DevOps Extension",
+  "version": "1.0.0",
+  "publisher": "iktech",
+  "targets": [
+    {
+      "id": "Microsoft.VisualStudio.Services"
+    }
+  ],
+  "description": "Tools for publishing/retrieving component details to/from the artifactz.io web service",
+  "categories": [
+    "Azure Pipelines"
+  ],
+  "icons": {
+    "default": "images/artifactz.png"
+  },
+  "files": [
+    {
+      "path": "buildTasks/publishArtifactTask"
+    },
+    {
+      "path": "buildTasks/pushArtifactTask"
+    },
+    {
+      "path": "buildTasks/retrieveArtifactsTask"
+    }
+  ],
+  "contributions": [
+    {
+      "id": "publish-artifact-azure-devops-task",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "buildTasks/publishArtifactTask"
+      }
+    },
+    {
+      "id": "push-artifact-azure-devops-task",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "buildTasks/pushArtifactTask"
+      }
+    },
+    {
+      "id": "retrieve-artifacts-azure-devops-task",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "buildTasks/retrieveArtifactsTask"
+      }
+    }
+  ]
+}

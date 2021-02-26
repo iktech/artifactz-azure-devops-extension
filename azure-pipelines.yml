@@ -15,7 +15,12 @@ stages:
           - task: TfxInstaller@3
             inputs:
               version: "v0.7.x"
-          - script: ls -l
+          - task: Bash@3
+            displayName: Install Mocha globally
+            inputs:
+              targetType: "inline"
+              script: |
+                npm install mocha --save-dev -g
           - task: Npm@1
             displayName: Install dependencies in the publishArtifactTask directory
             inputs:

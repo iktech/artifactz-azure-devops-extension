@@ -161,6 +161,7 @@ stages:
               downloadType: "single"
               artifactName: "$(ArtifactName)"
               downloadPath: "$(System.DefaultWorkingDirectory)"
+          - script: ls -l
           - task: PublishAzureDevOpsExtension@3
             inputs:
               connectTo: 'VsTeam'

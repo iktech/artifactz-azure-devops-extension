@@ -161,13 +161,12 @@ stages:
               downloadType: "single"
               artifactName: "$(ArtifactName)"
               downloadPath: "$(System.DefaultWorkingDirectory)"
-          - script: ls -l
           - task: PublishAzureDevOpsExtension@3
             inputs:
               connectTo: 'VsTeam'
               connectedServiceName: 'marketplace'
               fileType: 'vsix'
-              vsixFile: '$(PublisherID).*.vsix'
+              vsixFile: '$(ArtifactName)/$(PublisherID).*.vsix'
               publisherId: '$(PublisherID)'
               extensionId: '$(ExtensionID)'
               extensionName: '$(ExtensionName)'

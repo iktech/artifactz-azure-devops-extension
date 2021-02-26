@@ -15,11 +15,12 @@ stages:
           - task: TfxInstaller@3
             inputs:
               version: "v0.7.x"
+          - script: ls -l
           - task: Npm@1
             displayName: Install dependencies in the publishArtifactTask directory
             inputs:
               command: 'install'
-              workingDir: '/buildTasks/publishArtifactTask'
+              workingDir: 'buildTasks/publishArtifactTask'
           - task: Bash@3
             displayName: Compile Javascript in the publishArtifactTask directory
             inputs:
@@ -31,13 +32,13 @@ stages:
             displayName: Run unit tests in the publishArtifactTask directory
             inputs:
               command: 'custom'
-              workingDir: '/buildTasks/publishArtifactTask'
+              workingDir: 'buildTasks/publishArtifactTask'
               customCommand: 'test'
           - task: Npm@1
             displayName: Install dependencies in the pushArtifactTask directory
             inputs:
               command: 'install'
-              workingDir: '/buildTasks/pushArtifactTask'
+              workingDir: 'buildTasks/pushArtifactTask'
           - task: Bash@3
             displayName: Compile Javascript in the pushArtifactTask directory
             inputs:
@@ -49,13 +50,13 @@ stages:
             displayName: Run unit tests in the pushArtifactTask directory
             inputs:
               command: 'custom'
-              workingDir: '/buildTasks/pushArtifactTask'
+              workingDir: 'buildTasks/pushArtifactTask'
               customCommand: 'test'
           - task: Npm@1
             displayName: Install dependencies in the retrieveArtifactsTask  directory
             inputs:
               command: 'install'
-              workingDir: '/buildTasks/retrieveArtifactsTask'
+              workingDir: 'buildTasks/retrieveArtifactsTask'
           - task: Bash@3
             displayName: Compile Javascript in the retrieveArtifactsTask directory
             inputs:
@@ -67,7 +68,7 @@ stages:
             displayName: Run unit tests in the retrieveArtifactsTask directory
             inputs:
               command: 'custom'
-              workingDir: '/buildTasks/retrieveArtifactsTask'
+              workingDir: 'buildTasks/retrieveArtifactsTask'
               customCommand: 'test'
           - task: PublishTestResults@2
             inputs:
@@ -84,7 +85,7 @@ stages:
             displayName: Install dependencies in the publishArtifactTask directory
             inputs:
               command: 'install'
-              workingDir: '/buildTasks/publishArtifactTask'
+              workingDir: 'buildTasks/publishArtifactTask'
           - task: Bash@3
             displayName: Compile Javascript in the publishArtifactTask directory
             inputs:
@@ -96,7 +97,7 @@ stages:
             displayName: Install dependencies in the pushArtifactTask directory
             inputs:
               command: 'install'
-              workingDir: '/buildTasks/pushArtifactTask'
+              workingDir: 'buildTasks/pushArtifactTask'
           - task: Bash@3
             displayName: Compile Javascript in the pushArtifactTask directory
             inputs:
@@ -108,7 +109,7 @@ stages:
             displayName: Install dependencies in the retrieveArtifactsTask  directory
             inputs:
               command: 'install'
-              workingDir: '/buildTasks/retrieveArtifactsTask'
+              workingDir: 'buildTasks/retrieveArtifactsTask'
           - task: Bash@3
             displayName: Compile Javascript in the retrieveArtifactsTask directory
             inputs:

@@ -51,7 +51,7 @@ Then, you can publish the artifact details using this task:
 ```yaml
 - task: publish-artifact@1
   inputs:
-    serviceUrl: 'https://artifactor-uat.iktech.io'
+    serviceUrl: 'https://artifactor.uat.artifactz.io'
     apiToken: '<api-token>'
     stage: 'Development'
     flow: 'Test'
@@ -94,7 +94,7 @@ Then, you can push the artifact details using this task:
 - task: push-artifact@1
   name: pushArtifact
   inputs:
-    serviceUrl: 'https://artifactor-uat.iktech.io'
+    serviceUrl: 'https://artifactor.uat.artifactz.io'
     apiToken: '<api-token>'
     stage: 'Development'
     name: 'test-data'
@@ -134,7 +134,7 @@ Then, you can retrieve the artifact details using this task:
 - task: retrieve-artifacts@1
   name: retrieveArtifacts
   inputs:
-    serviceUrl: 'https://artifactor-uat.iktech.io'
+    serviceUrl: 'https://artifactor.uat.artifactz.io'
     apiToken: '<api-token>'
     stage: 'Development'
     artifacts: 'test-data'

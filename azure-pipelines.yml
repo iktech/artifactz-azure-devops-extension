@@ -73,9 +73,10 @@ stages:
               workingDir: 'buildTasks/retrieveArtifactsTask'
               customCommand: 'test'
           - task: PublishTestResults@2
+            condition: succeededOrFailed()
             inputs:
               testResultsFormat: 'JUnit'
-              testResultsFiles: '**/ResultsFile.xml'
+              testResultsFiles: '**/test-result.xml'
   - stage: Package_extension_and_publish_build_artifacts
     jobs:
       - job:

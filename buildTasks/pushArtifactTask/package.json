@@ -4,7 +4,7 @@
   "description": "The Azure DevOps task to push the artifact version through the flow in the artifactz.io from the Azure DevOps pipeline",
   "main": "index.js",
   "scripts": {
-    "test": "tsc && mocha tests/_suite.js --reporter xunit --reporter-option output=tests/ResultsFile.xml"
+    "test": "tsc && mocha tests/_suite.js --reporter mocha-junit-reporter --reporter-option mochaFile=reports/test-result.xml"
   },
   "author": "Igor Kolomiyets <igor.kolomiyets@iktech.io>",
   "license": "MIT",
@@ -16,6 +16,7 @@
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.7.10",
     "@types/q": "^1.5.4",
+    "mocha-junit-reporter": "^2.0.0",
     "sync-request": "^6.1.0"
   }
 }

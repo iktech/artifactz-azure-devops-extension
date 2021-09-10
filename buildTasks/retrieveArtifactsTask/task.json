@@ -34,7 +34,7 @@
       "type": "string",
       "label": "Stage",
       "required": true,
-      "helpMarkDown": "Name of the stage where artifact will be published. If the stage does not exist it will be created"
+      "helpMarkDown": "Name of the stage from which artifacts' versions will be retrieved"
     },
     {
       "name": "artifacts",
@@ -52,7 +52,7 @@
   "outputVariables": [
     {
       "name": "artifacts",
-      "description": "Requested artifacts versions from the specified stage"
+      "description": "Requested artifacts versions from the specified stage as the JSON object"
     }
   ]
 }

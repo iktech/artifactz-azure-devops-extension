@@ -54,23 +54,23 @@ async function run() {
             console.log(`Pushing version ${version}`);
         }
 
-        axios.put(`${serviceUrl}/artifacts/push`, payload, {
-            headers: {
-                'Content-Type': 'application/json',
-                'User-Agent': 'Push Artifact Azure DevOps Task v1.0.0',
-                'Authorization': `Bearer ${apiToken}`,
-            }
-        }).then(response => {
+        try {
+            const response = await axios.put(`${serviceUrl}/artifacts/push`, payload, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'User-Agent': 'Push Artifact Azure DevOps Task v1.0.0',
+                    'Authorization': `Bearer ${apiToken}`,
+                }
+            });
             if (response.status !== 200) {
                 tl.setResult(tl.TaskResult.Failed, `Cannot push artifact '${name}': ${response.data.message}`);
             } else {
                 console.log(`Successfully pushed artifact '${name}' version: ${response.data.version}`);
                 tl.setVariable('version', response.data.version, false, true);
             }
-        }).catch(error => {
+        } catch (error: any) {
             tl.setResult(tl.TaskResult.Failed, error.response.data.error);
-        });
-
+        }
     } catch (err) {
         if (err instanceof Error) {
             tl.setResult(tl.TaskResult.Failed, err.message);

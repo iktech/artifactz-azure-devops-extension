@@ -106,7 +106,7 @@ For example:
 ```
 
 ## `retrieve-artifacts`
-This action retrieves artifact details from the specified stage at the https://artifactz.io.
+This action retrieves artifacts' versions from the specified stage at the https://artifactz.io.
 
 ## Inputs
 ### `serviceUrl`
@@ -117,15 +117,22 @@ This action retrieves artifact details from the specified stage at the https://a
 **Required** The API token with write permissions
 
 ### `stage`
-**Required** Stage where artifact is getting pushed from
+**Required** Stage from which task retrieves artifacts' versions
 
 ### `artifacts`
-**Required** Names of the artifacts to retrieve. It could be a name of the single artifact or the list of the artifacts,
-presented in the form of JSON array
+**Required** Names of the artifacts to retrieve. It is a string parameter, which could be a name of the single artifact or the list of the artifacts,
+presented in the form of JSON array. For example, if the value represents a single artifact it looks like this 'test-data'. When the list of artifact names is passed it 
+will look like this: '["test-data", "test-app"]'
 
 ## Outputs
 ### `artifacts`
-The retrieved artifacts details
+The retrieved artifacts details in the JSON format, for example:
+```json
+{
+  "test-data": "1.0.0.3",
+  "test-app": "1.0.1.2"
+}
+```
 
 ## Example
 Before adding this task to your pipeline, set a secret with the API token in your project.
@@ -142,6 +149,46 @@ Then, you can retrieve the artifact details using this task:
 You can get the artifact details by using the output variable `$(<taskName>.artifacts)`.
 For example:
 ```yaml
-- script: echo $(pushArtifact.artifacts)
+- script: echo $(retrieveArtifacts.artifacts)
 ```
 The value is the stringified JSON object. 
+
+## `retrieve-artifact`
+This action retrieves a single artifact details from the specified stage at the https://artifactz.io.
+
+## Inputs
+### `serviceUrl`
+**Required** The URL of the artifactz.io service.
+*Default:* https://artifactor.artifactz.io
+
+### `apiToken`
+**Required** The API token with write permissions
+
+### `stage`
+**Required** Stage from which task retrieves the artifact version
+
+### `artifact`
+**Required** Names of the artifact to retrieve
+
+## Outputs
+### `version`
+The artifact version
+
+## Example
+Before adding this task to your pipeline, set a secret with the API token in your project.
+Then, you can retrieve the artifact details using this task:
+```yaml
+- task: retrieve-artifact@1
+  name: retrieveArtifact
+  inputs:
+    serviceUrl: 'https://artifactor.uat.artifactz.io'
+    apiToken: '<api-token>'
+    stage: 'Development'
+    artifact: 'test-data'
+```
+You can get the artifact details by using the output variable `$(<taskName>.version)`.
+For example:
+```yaml
+- script: echo $(retrieveArtifact.version)
+```
+The value is the version string. For example: "1.0.2.0".

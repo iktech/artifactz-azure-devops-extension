@@ -66,6 +66,9 @@
     },
     {
       "path": "buildTasks/retrieveArtifactsTask"
+    },
+    {
+      "path": "buildTasks/retrieveArtifactTask"
     }
   ],
   "contributions": [
@@ -97,6 +100,16 @@
       ],
       "properties": {
         "name": "buildTasks/retrieveArtifactsTask"
+      }
+    },
+    {
+      "id": "retrieve-artifact-azure-devops-task",
+      "type": "ms.vss-distributed-task.task",
+      "targets": [
+        "ms.vss-distributed-task.tasks"
+      ],
+      "properties": {
+        "name": "buildTasks/retrieveArtifactTask"
       }
     }
   ]

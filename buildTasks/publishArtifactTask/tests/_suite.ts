@@ -24,7 +24,7 @@ describe('Publish Artifact task tests', function () {
         assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
         assert.strictEqual(tr.errorIssues.length, 0, "should have no errors");
         console.log(tr.stdout);
-        assert.strictEqual(tr.stdout.indexOf('Successfully published artifact \'test-data\' version: 1.0.0') >= 0, true, "should display Hello human");
+        assert.strictEqual(tr.stdout.indexOf('Successfully published artifact \'test-data-publish\' version: 1.0.0') >= 0, true, "should display Hello human");
         done();
     });
 

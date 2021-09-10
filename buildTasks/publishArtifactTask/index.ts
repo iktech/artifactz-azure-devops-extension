@@ -118,24 +118,24 @@ async function run() {
             }
         }
 
-        console.log(`Publishing artifact '${name}' details to the ${serviceUrl}`);
-        axios.put(`${serviceUrl}/artifacts/versions`, payload, {
-            headers: {
-                'Content-Type': 'application/json',
-                'User-Agent': 'Publish Artifact Azure DevOps Task v1.0.0',
-                'Authorization': `Bearer ${apiToken}`,
-            }
-        }).then(response => {
+        try {
+            console.log(`Publishing artifact '${name}' details to the ${serviceUrl}`);
+            const response = await axios.put(`${serviceUrl}/artifacts/versions`, payload, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'User-Agent': 'Publish Artifact Azure DevOps Task v1.0.0',
+                    'Authorization': `Bearer ${apiToken}`,
+                }
+            });
             if (response.status !== 202) {
                 tl.setResult(tl.TaskResult.Failed, `Cannot publish artifact '${name}' version: ${response.data.message}`);
             } else {
                 console.log(`Successfully published artifact '${name}' version: ${version}`);
             }
-        }).catch(error => {
-            tl.setResult(tl.TaskResult.Failed, error.response.data.error);
-        });
-    }
-    catch (err) {
+        } catch (err: any) {
+            tl.setResult(tl.TaskResult.Failed, err.response.data.error);
+        }
+    } catch (err) {
         if (err instanceof Error) {
             tl.setResult(tl.TaskResult.Failed, err.message);
         } else {

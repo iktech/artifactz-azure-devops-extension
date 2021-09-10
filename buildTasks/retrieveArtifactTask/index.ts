@@ -22,26 +22,15 @@ async function run() {
             return;
         }
 
-        const artifactsString: string | undefined = tl.getInput('artifacts', true);
-        if (!artifactsString) {
-            tl.setResult(tl.TaskResult.Failed, 'Artifacts is required input');
+        const artifact: string | undefined = tl.getInput('artifact', true);
+        if (!artifact) {
+            tl.setResult(tl.TaskResult.Failed, 'Artifact is required input');
             return;
         }
 
-        let artifacts: string[];
-        let params : string;
-
-        try {
-            artifacts = JSON.parse(artifactsString);
-            params = artifacts.map(n => `artifact=${n}`).join('&');
-        } catch (e) {
-            params = `artifact=${artifactsString}`;
-        }
-
         console.log(`Retrieving artifact details from the stage '${stage}'`);
-
         try {
-            let response = await axios.get(`${serviceUrl}/stages/${stage}/list?${params}`, {
+            let response = await axios.get(`${serviceUrl}/stages/${stage}/list?artifact=${artifact}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'User-Agent': 'Retrieve Artifacts Azure DevOps Task v1.0.0',
@@ -49,16 +38,14 @@ async function run() {
                 }
             });
             if (response.status !== 200) {
-                tl.setResult(tl.TaskResult.Failed, `Cannot retrieve artifacts: ${response.data.message}`);
+                tl.setResult(tl.TaskResult.Failed, `Cannot retrieve artifact version: ${response.data.message}`);
             } else {
-                console.log(`Successfully retrieved artifacts from the server`);
-                let data: any = {}
-                if (response.data.artifacts) {
-                    response.data.artifacts.forEach((item: { artifact_name: string, type: string, group_id: string, artifact_id: string, version: string }) => {
-                        data[item.artifact_name] = item.version;
-                    });
+                let data = ""
+                console.log(`Successfully retrieved artifact version from the server`);
+                if (response.data.artifacts && response.data.artifacts.length === 1) {
+                    data = response.data.artifacts[0].version;
                 }
-                tl.setVariable('artifacts', JSON.stringify(data), false, true);
+                tl.setVariable('version', data, false, true);
             }
         } catch(error: any) {
             tl.setResult(tl.TaskResult.Failed, error.response.data.error);
@@ -68,7 +55,7 @@ async function run() {
         if (err instanceof Error) {
             tl.setResult(tl.TaskResult.Failed, err.message);
         } else {
-            tl.setResult(tl.TaskResult.Failed, 'Failed to retrieve artifacts versions');
+            tl.setResult(tl.TaskResult.Failed, 'Failed to retrieve artifact version');
         }
     }
 }

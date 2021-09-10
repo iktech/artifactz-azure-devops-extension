@@ -24,7 +24,7 @@ describe('Push Artifact task tests', function () {
         assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
         assert.strictEqual(tr.errorIssues.length, 0, "should have no errors");
         console.log(tr.stdout);
-        assert.strictEqual(tr.stdout.indexOf('Successfully pushed artifact \'test-data\' version: ') >= 0, true, "should display success message");
+        assert.strictEqual(tr.stdout.indexOf('Successfully pushed artifact \'test-data-publish\' version: ') >= 0, true, "should display success message");
         assert.strictEqual(tr.stdout.indexOf('##vso[task.setvariable variable=version;isOutput=true;issecret=false;]1.0.0') >= 0, true, "should set variable");
         done();
     });

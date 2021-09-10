@@ -4,3 +4,5 @@ iktech.artifactz-azure-devops-extension-1.0.0.vsix
 resultsFile.xml
 *.js
 reports
+.taskkey
+

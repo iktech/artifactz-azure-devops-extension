@@ -25,14 +25,14 @@ describe('Publish Artifact task tests', function () {
         assert.strictEqual(tr.errorIssues.length, 0, "should have no errors");
         console.log(tr.stdout);
         assert.strictEqual(tr.stdout.indexOf('Successfully retrieved artifacts from the server') >= 0, true, "should display success message");
-        assert.strictEqual(tr.stdout.indexOf('##vso[task.setvariable variable=artifacts;isOutput=true;issecret=false;]{"stage":"Development","artifacts":[{"artifact_name":"test-data","type":"JAR","group_id":"io.iktech.test","artifact_id":"test-data","version":"1.0.0"}]}') >= 0, true, "should set variable");
+        assert.strictEqual(tr.stdout.indexOf('##vso[task.setvariable variable=artifacts;isOutput=true;issecret=false;]{"gradle-plugin-test":"1.0.0-SNAPSHOT","test-data":"1.0.1"}') >= 0, true, "should set variable");
         done();
     });
 
     it('should succeed with single artifact', function(done: Mocha.Done) {
         this.timeout(5000);
 
-        let tp = path.join(__dirname, 'success.js');
+        let tp = path.join(__dirname, 'successSingle.js');
         let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
         tr.run();
@@ -42,7 +42,7 @@ describe('Publish Artifact task tests', function () {
         assert.strictEqual(tr.errorIssues.length, 0, "should have no errors");
         console.log(tr.stdout);
         assert.strictEqual(tr.stdout.indexOf('Successfully retrieved artifacts from the server') >= 0, true, "should display success message");
-        assert.strictEqual(tr.stdout.indexOf('##vso[task.setvariable variable=artifacts;isOutput=true;issecret=false;]{"stage":"Development","artifacts":[{"artifact_name":"test-data","type":"JAR","group_id":"io.iktech.test","artifact_id":"test-data","version":"1.0.0"}]}') >= 0, true, "should set variable");
+        assert.strictEqual(tr.stdout.indexOf('##vso[task.setvariable variable=artifacts;isOutput=true;issecret=false;]{"test-data":"1.0.1"}') >= 0, true, "should set variable");
         done();
     });
 

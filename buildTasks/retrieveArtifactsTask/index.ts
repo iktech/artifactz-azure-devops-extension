@@ -51,7 +51,11 @@ async function run() {
                 tl.setResult(tl.TaskResult.Failed, `Cannot retrieve artifacts: ${response.data.message}`);
             } else {
                 console.log(`Successfully retrieved artifacts from the server`);
-                tl.setVariable('artifacts', JSON.stringify(response.data), false, true);
+                let data: any = {}
+                response.data.artifacts.forEach((item: {artifact_name: string, type: string, group_id: string, artifact_id: string, version: string}) => {
+                    data[item.artifact_name] = item.version
+                });
+                tl.setVariable('artifacts', JSON.stringify(data), false, true);
             }
         }).catch(error => {
             tl.setResult(tl.TaskResult.Failed, error.response.data.error);

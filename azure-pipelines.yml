@@ -70,7 +70,7 @@ stages:
             displayName: Run unit tests in the retrieveArtifactsTask directory
             inputs:
               command: 'custom'
-              workingDir: 'buildTasks/retrieveArtifactTask'
+              workingDir: 'buildTasks/retrieveArtifactsTask'
               customCommand: 'test'
           - task: Npm@1
             displayName: Install dependencies in the retrieveArtifactTask  directory
@@ -78,7 +78,7 @@ stages:
               command: 'install'
               workingDir: 'buildTasks/retrieveArtifactTask'
           - task: Bash@3
-            displayName: Compile Javascript and install mocha package in the retrieveArtifactsTask directory
+            displayName: Compile Javascript and install mocha package in the retrieveArtifactTask directory
             inputs:
               targetType: "inline"
               script: |

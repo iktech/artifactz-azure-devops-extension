@@ -69,9 +69,11 @@ async function run() {
                 tl.setVariable('version', response.data.version, false, true);
             }
         } catch (error: any) {
+            console.log(error);
             tl.setResult(tl.TaskResult.Failed, error.response.data.error);
         }
     } catch (err) {
+        console.log(err);
         if (err instanceof Error) {
             tl.setResult(tl.TaskResult.Failed, err.message);
         } else {

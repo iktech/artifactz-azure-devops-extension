@@ -70,7 +70,26 @@ stages:
             displayName: Run unit tests in the retrieveArtifactsTask directory
             inputs:
               command: 'custom'
-              workingDir: 'buildTasks/retrieveArtifactsTask'
+              workingDir: 'buildTasks/retrieveArtifactTask'
+              customCommand: 'test'
+          - task: Npm@1
+            displayName: Install dependencies in the retrieveArtifactTask  directory
+            inputs:
+              command: 'install'
+              workingDir: 'buildTasks/retrieveArtifactTask'
+          - task: Bash@3
+            displayName: Compile Javascript and install mocha package in the retrieveArtifactsTask directory
+            inputs:
+              targetType: "inline"
+              script: |
+                cd buildTasks/retrieveArtifactTask
+                tsc
+                npm install mocha --save-dev
+          - task: Npm@1
+            displayName: Run unit tests in the retrieveArtifactTask directory
+            inputs:
+              command: 'custom'
+              workingDir: 'buildTasks/retrieveArtifactTask'
               customCommand: 'test'
           - task: PublishTestResults@2
             condition: succeededOrFailed()
@@ -119,6 +138,18 @@ stages:
               targetType: "inline"
               script: |
                 cd buildTasks/retrieveArtifactsTask
+                tsc
+          - task: Npm@1
+            displayName: Install dependencies in the retrieveArtifactTask  directory
+            inputs:
+              command: 'install'
+              workingDir: 'buildTasks/retrieveArtifactTask'
+          - task: Bash@3
+            displayName: Compile Javascript in the retrieveArtifactTask directory
+            inputs:
+              targetType: "inline"
+              script: |
+                cd buildTasks/retrieveArtifactTask
                 tsc
           - task: QueryAzureDevOpsExtensionVersion@3
             inputs:

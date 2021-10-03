@@ -10,7 +10,7 @@
   "version": {
     "Major": 1,
     "Minor": 0,
-    "Patch": 0
+    "Patch": 1
   },
   "instanceNameFormat": "Echo $(samplestring)",
   "inputs": [
@@ -18,9 +18,8 @@
       "name": "serviceUrl",
       "type": "string",
       "label": "Web Service URL",
-      "defaultValue": "https://artifactor.artifactz.io",
-      "required": true,
-      "helpMarkDown": "The Artifactz.io web service URL. Use default value to access production instance"
+      "required": false,
+      "helpMarkDown": "The Artifactz.io web service URL. When omitted production instance url is used (https://artifactor.artifactz.io)"
     },
     {
       "name": "apiToken",
@@ -42,6 +41,27 @@
       "label": "Artifact name",
       "required": true,
       "helpMarkDown": "The name of the artifact to retrieve version"
+    },
+    {
+      "name": "proxyUrl",
+      "type": "string",
+      "label": "Proxy URL",
+      "required": false,
+      "helpMarkDown": "The URL of the proxy to use to access the Artifactz.io site"
+    },
+    {
+      "name": "proxyUsername",
+      "type": "string",
+      "label": "Proxy Username",
+      "required": false,
+      "helpMarkDown": "The proxy username when proxy requires authentication"
+    },
+    {
+      "name": "proxyPassword",
+      "type": "string",
+      "label": "Proxy Password",
+      "required": false,
+      "helpMarkDown": "The proxy password when proxy requires authentication"
     }
   ],
   "execution": {

@@ -1,5 +1,5 @@
 import tl = require('azure-pipelines-task-lib/task');
-import axios from 'axios';
+import axios, { AxiosProxyConfig, AxiosRequestConfig } from 'axios';
 
 type PushArtifactRequest = {
     stage_name: String,
@@ -7,13 +7,16 @@ type PushArtifactRequest = {
     version: String | undefined,
 };
 
+type ErrorResponse = {
+    error: String,
+}
+
 async function run() {
     try {
         // Validate inputs
-        const serviceUrl: string | undefined = tl.getInput('serviceUrl', true);
+        let serviceUrl: string | undefined = tl.getInput('serviceUrl', false);
         if (!serviceUrl) {
-            tl.setResult(tl.TaskResult.Failed, 'Service URL is required input');
-            return;
+            serviceUrl = 'https://artifactor.artifactz.io';
         }
 
         const apiToken: string | undefined = tl.getInput('apiToken', true);
@@ -35,6 +38,28 @@ async function run() {
         }
 
         const version: string | undefined = tl.getInput('version', false);
+        let proxyUrl: string | undefined = tl.getInput('proxyUrl', false);
+        let proxyUsername: string | undefined = tl.getInput('proxyUsername', false);
+        let proxyPassword: string | undefined = tl.getInput('proxyPassword', false);
+        let proxy : AxiosProxyConfig | undefined = undefined;
+        if (proxyUrl) {
+            const proxyObject = new URL(proxyUrl);
+            proxy = {
+                protocol: proxyObject.protocol,
+                host: proxyObject.host,
+                port: +proxyObject.port,
+            };
+            if (proxyUsername || proxyPassword) {
+                proxy = {
+                    ...proxy,
+                    auth: {
+                        username: proxyUsername as string,
+                        password: proxyPassword as string,
+                    }
+                }
+            }
+        }
+
         // Build a payload object
         let payload : PushArtifactRequest = {
             stage_name: stage,
@@ -55,13 +80,22 @@ async function run() {
         }
 
         try {
-            const response = await axios.put(`${serviceUrl}/artifacts/push`, payload, {
+            let config : AxiosRequestConfig = {
                 headers: {
                     'Content-Type': 'application/json',
-                    'User-Agent': 'Push Artifact Azure DevOps Task v1.0.0',
+                    'User-Agent': 'Publish Artifact Azure DevOps Task v1.0.1',
                     'Authorization': `Bearer ${apiToken}`,
                 }
-            });
+            };
+
+            if (proxy) {
+                config = {
+                    ...config,
+                    proxy: proxy,
+                }
+            };
+
+            const response = await axios.put(`${serviceUrl}/artifacts/push`, payload, config);
             if (response.status !== 200) {
                 tl.setResult(tl.TaskResult.Failed, `Cannot push artifact '${name}': ${response.data.message}`);
             } else {

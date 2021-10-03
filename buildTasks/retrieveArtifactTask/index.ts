@@ -1,13 +1,31 @@
 import tl = require('azure-pipelines-task-lib/task');
-import axios from 'axios';
+import axios, { AxiosProxyConfig, AxiosRequestConfig, AxiosResponse } from 'axios';
+
+type Version = {
+    artifact_name: string,
+    artifact_description: string,
+    type: string,
+    flow_id: number,
+    group_id: string,
+    artifact_id: string,
+    version: string,
+}
+
+type RetrieveArtifactsResponse = {
+    stage: string
+    artifacts: Version[],
+}
+
+type ErrorResponse = {
+    error: String,
+}
 
 async function run() {
     try {
         // Validate inputs
-        const serviceUrl: string | undefined = tl.getInput('serviceUrl', true);
+        let serviceUrl: string | undefined = tl.getInput('serviceUrl', false);
         if (!serviceUrl) {
-            tl.setResult(tl.TaskResult.Failed, 'Service URL is required input');
-            return;
+            serviceUrl = 'https://artifactor.artifactz.io';
         }
 
         const apiToken: string | undefined = tl.getInput('apiToken', true);
@@ -28,22 +46,55 @@ async function run() {
             return;
         }
 
+        let proxyUrl: string | undefined = tl.getInput('proxyUrl', false);
+        let proxyUsername: string | undefined = tl.getInput('proxyUsername', false);
+        let proxyPassword: string | undefined = tl.getInput('proxyPassword', false);
+        let proxy : AxiosProxyConfig | undefined = undefined;
+        if (proxyUrl) {
+            const proxyObject = new URL(proxyUrl);
+            proxy = {
+                protocol: proxyObject.protocol,
+                host: proxyObject.host,
+                port: +proxyObject.port,
+            };
+            if (proxyUsername || proxyPassword) {
+                proxy = {
+                    ...proxy,
+                    auth: {
+                        username: proxyUsername as string,
+                        password: proxyPassword as string,
+                    }
+                }
+            }
+        }
+
         console.log(`Retrieving artifact details from the stage '${stage}'`);
         try {
-            let response = await axios.get(`${serviceUrl}/stages/${stage}/list?artifact=${artifact}`, {
+            let config : AxiosRequestConfig = {
                 headers: {
                     'Content-Type': 'application/json',
-                    'User-Agent': 'Retrieve Artifacts Azure DevOps Task v1.0.0',
+                    'User-Agent': 'Publish Artifact Azure DevOps Task v1.0.1',
                     'Authorization': `Bearer ${apiToken}`,
                 }
-            });
+            };
+
+            if (proxy) {
+                config = {
+                    ...config,
+                    proxy: proxy,
+                }
+            };
+
+            let response : AxiosResponse<RetrieveArtifactsResponse> | AxiosResponse<ErrorResponse> = await axios.get(`${serviceUrl}/stages/${stage}/list?artifact=${artifact}`, config);
+
             if (response.status !== 200) {
-                tl.setResult(tl.TaskResult.Failed, `Cannot retrieve artifact version: ${response.data.message}`);
+                tl.setResult(tl.TaskResult.Failed, `Cannot retrieve artifact version: ${(response.data as ErrorResponse).error}`);
             } else {
-                let data = ""
                 console.log(`Successfully retrieved artifact version from the server`);
-                if (response.data.artifacts && response.data.artifacts.length === 1) {
-                    data = response.data.artifacts[0].version;
+                const responseData : RetrieveArtifactsResponse = response.data as RetrieveArtifactsResponse;
+                let data = ""
+                if (responseData.artifacts && responseData.artifacts.length === 1) {
+                    data = responseData.artifacts[0].version;
                 }
                 tl.setVariable('version', data, false, true);
             }

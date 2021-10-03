@@ -1,5 +1,5 @@
 import tl = require('azure-pipelines-task-lib/task');
-import axios from 'axios';
+import axios, { AxiosProxyConfig, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 type PublishArtifactRequest = {
     stage: String,
@@ -13,13 +13,16 @@ type PublishArtifactRequest = {
     version: String,
 };
 
+type ErrorResponse = {
+    error: String,
+}
+
 async function run() {
     try {
         // Validate inputs
-        const serviceUrl: string | undefined = tl.getInput('serviceUrl', true);
+        let serviceUrl: string | undefined = tl.getInput('serviceUrl', false);
         if (!serviceUrl) {
-            tl.setResult(tl.TaskResult.Failed, 'Service URL is required input');
-            return;
+            serviceUrl = 'https://artifactor.artifactz.io';
         }
 
         const apiToken: string | undefined = tl.getInput('apiToken', true);
@@ -70,6 +73,27 @@ async function run() {
             return;
         }
 
+        let proxyUrl: string | undefined = tl.getInput('proxyUrl', false);
+        let proxyUsername: string | undefined = tl.getInput('proxyUsername', false);
+        let proxyPassword: string | undefined = tl.getInput('proxyPassword', false);
+        let proxy : AxiosProxyConfig | undefined = undefined;
+        if (proxyUrl) {
+            const proxyObject = new URL(proxyUrl);
+            proxy = {
+                protocol: proxyObject.protocol,
+                host: proxyObject.host,
+                port: +proxyObject.port,
+            };
+            if (proxyUsername || proxyPassword) {
+                proxy = {
+                    ...proxy,
+                    auth: {
+                        username: proxyUsername as string,
+                        password: proxyPassword as string,
+                    }
+                }
+            }
+        }
         // Build a payload object
         let payload : PublishArtifactRequest = {
             stage,
@@ -120,15 +144,24 @@ async function run() {
 
         try {
             console.log(`Publishing artifact '${name}' details to the ${serviceUrl}`);
-            const response = await axios.put(`${serviceUrl}/artifacts/versions`, payload, {
+            let config : AxiosRequestConfig = {
                 headers: {
                     'Content-Type': 'application/json',
-                    'User-Agent': 'Publish Artifact Azure DevOps Task v1.0.0',
+                    'User-Agent': 'Publish Artifact Azure DevOps Task v1.0.1',
                     'Authorization': `Bearer ${apiToken}`,
                 }
-            });
+            };
+
+            if (proxy) {
+                config = {
+                    ...config,
+                    proxy: proxy,
+                }
+            };
+
+            const response : AxiosResponse<ErrorResponse> = await axios.put(`${serviceUrl}/artifacts/versions`, payload, config);
             if (response.status !== 202) {
-                tl.setResult(tl.TaskResult.Failed, `Cannot publish artifact '${name}' version: ${response.data.message}`);
+                tl.setResult(tl.TaskResult.Failed, `Cannot publish artifact '${name}' version: ${response.data.error}`);
             } else {
                 console.log(`Successfully published artifact '${name}' version: ${version}`);
             }

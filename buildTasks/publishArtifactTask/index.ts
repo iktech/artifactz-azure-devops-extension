@@ -81,7 +81,7 @@ async function run() {
             const proxyObject = new URL(proxyUrl);
             proxy = {
                 protocol: proxyObject.protocol,
-                host: proxyObject.host,
+                host: proxyObject.hostname,
                 port: +proxyObject.port,
             };
             if (proxyUsername || proxyPassword) {

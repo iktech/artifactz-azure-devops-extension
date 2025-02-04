@@ -13,7 +13,7 @@ the action.
 ## Inputs
 ### `serviceUrl`
 **Required** The URL of the artifactz.io service.
-*Default:* https://artifactor.artifactz.io
+*Default:* https://api.artifactz.io
 
 ### `apiToken`
 **Required** The API token with write permissions
@@ -51,7 +51,7 @@ Then, you can publish the artifact details using this task:
 ```yaml
 - task: publish-artifact@1
   inputs:
-    serviceUrl: 'https://artifactor.uat.artifactz.io'
+    serviceUrl: 'https://api.uat.artifactz.io'
     apiToken: '<api-token>'
     stage: 'Development'
     flow: 'Test'
@@ -69,7 +69,7 @@ If version is omitted, then current version from the specified stage is getting 
 ## Inputs
 ### `serviceUrl`
 **Required** The URL of the artifactz.io service.
-*Default:* https://artifactor.artifactz.io
+*Default:* https://api.artifactz.io
 
 ### `apiToken`
 **Required** The API token with write permissions
@@ -94,7 +94,7 @@ Then, you can push the artifact details using this task:
 - task: push-artifact@1
   name: pushArtifact
   inputs:
-    serviceUrl: 'https://artifactor.uat.artifactz.io'
+    serviceUrl: 'https://api.uat.artifactz.io'
     apiToken: '<api-token>'
     stage: 'Development'
     name: 'test-data'
@@ -111,7 +111,7 @@ This action retrieves artifacts' versions from the specified stage at the https:
 ## Inputs
 ### `serviceUrl`
 **Required** The URL of the artifactz.io service.
-*Default:* https://artifactor.artifactz.io
+*Default:* https://api.artifactz.io
 
 ### `apiToken`
 **Required** The API token with write permissions
@@ -141,7 +141,7 @@ Then, you can retrieve the artifact details using this task:
 - task: retrieve-artifacts@1
   name: retrieveArtifacts
   inputs:
-    serviceUrl: 'https://artifactor.uat.artifactz.io'
+    serviceUrl: 'https://api.uat.artifactz.io'
     apiToken: '<api-token>'
     stage: 'Development'
     artifacts: 'test-data'
@@ -159,7 +159,7 @@ This action retrieves a single artifact details from the specified stage at the 
 ## Inputs
 ### `serviceUrl`
 **Required** The URL of the artifactz.io service.
-*Default:* https://artifactor.artifactz.io
+*Default:* https://api.artifactz.io
 
 ### `apiToken`
 **Required** The API token with write permissions
@@ -181,7 +181,7 @@ Then, you can retrieve the artifact details using this task:
 - task: retrieve-artifact@1
   name: retrieveArtifact
   inputs:
-    serviceUrl: 'https://artifactor.uat.artifactz.io'
+    serviceUrl: 'https://api.uat.artifactz.io'
     apiToken: '<api-token>'
     stage: 'Development'
     artifact: 'test-data'

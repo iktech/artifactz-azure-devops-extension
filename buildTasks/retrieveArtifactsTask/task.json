@@ -19,7 +19,7 @@
       "type": "string",
       "label": "Web Service URL",
       "required": false,
-      "helpMarkDown": "The Artifactz.io web service URL. When omitted production instance url is used (https://artifactor.artifactz.io)"
+      "helpMarkDown": "The Artifactz.io web service URL. When omitted production instance url is used (https://api.artifactz.io)"
     },
     {
       "name": "apiToken",

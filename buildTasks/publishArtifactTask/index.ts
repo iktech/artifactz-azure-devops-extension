@@ -22,7 +22,7 @@ async function run() {
         // Validate inputs
         let serviceUrl: string | undefined = tl.getInput('serviceUrl', false);
         if (!serviceUrl) {
-            serviceUrl = 'https://artifactor.artifactz.io';
+            serviceUrl = 'https://api.artifactz.io';
         }
 
         const apiToken: string | undefined = tl.getInput('apiToken', true);

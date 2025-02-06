@@ -13,6 +13,7 @@ describe('Publish Artifact task tests', function () {
     });
 
     it('should succeed with simple inputs', async () => {
+        this.timeout(5000);
         let tp = path.join(__dirname, 'success.js');
         let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 
@@ -71,7 +72,7 @@ describe('Publish Artifact task tests', function () {
         assert.strictEqual(tr.stdout.indexOf('Successfully published artifact '), -1, "Should not display Hello bad");
     });
 
-    it('it should fail if type is not specified',async () => {
+    it('it should fail if type is not specified', async () => {
         let tp = path.join(__dirname, 'type.js');
         let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 

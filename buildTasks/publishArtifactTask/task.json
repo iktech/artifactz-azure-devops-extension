@@ -13,7 +13,6 @@
     "Patch": 1
   },
   "instanceNameFormat": "Echo $(samplestring)",
-  "minimumAgentVersion": "3.232.1",
   "inputs": [
     {
       "name": "serviceUrl",

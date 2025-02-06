@@ -152,6 +152,7 @@ stages:
                 cd buildTasks/retrieveArtifactTask
                 tsc
           - task: QueryAzureDevOpsExtensionVersion@4
+            name: QueryVersion
             inputs:
               connectTo: 'VsTeam'
               connectedServiceName: 'marketplace'
@@ -165,7 +166,7 @@ stages:
               publisherId: '$(PublisherID)'
               extensionId: '$(ExtensionID)'
               extensionName: '$(ExtensionName)'
-              extensionVersion: '$(Task.Extension.Version)'
+              extensionVersion: '$(QueryVersion.Extension.Version)'
               updateTasksVersion: true
               updateTasksVersionType: 'patch'
               extensionVisibility: 'private' # Change to public if you're publishing to the marketplace

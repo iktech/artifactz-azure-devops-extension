@@ -13,7 +13,6 @@ describe('Publish Artifact task tests', function () {
     });
 
     it('should succeed with simple inputs', async () => {
-        this.timeout(5000);
         let tp = path.join(__dirname, 'success.js');
         let tr: ttm.MockTestRunner = new ttm.MockTestRunner(tp);
 

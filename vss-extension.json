@@ -2,7 +2,7 @@
   "manifestVersion": 1,
   "id": "artifactz-azure-devops-extension",
   "name": "Artifactz.io Azure DevOps Extension",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "publisher": "iktech",
   "tags": [
     "Extension",

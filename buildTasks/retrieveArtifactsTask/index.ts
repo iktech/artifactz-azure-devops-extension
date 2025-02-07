@@ -84,7 +84,7 @@ async function run() {
             let config : AxiosRequestConfig = {
                 headers: {
                     'Content-Type': 'application/json',
-                    'User-Agent': 'Publish Artifact Azure DevOps Task v1.0.1',
+                    'User-Agent': 'Retrieve Artifacts Azure DevOps Task v1.1.1',
                     'Authorization': `Bearer ${apiToken}`,
                 }
             };

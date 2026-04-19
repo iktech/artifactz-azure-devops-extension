@@ -21,7 +21,7 @@ describe('Retrieve Artifacts task tests', function () {
         assert.strictEqual(tr.warningIssues.length, 0, "should have no warnings");
         assert.strictEqual(tr.errorIssues.length, 0, "should have no errors");
         assert.strictEqual(tr.stdout.indexOf('Successfully retrieved artifacts from the server') >= 0, true, "should display success message");
-        assert.strictEqual(tr.stdout.indexOf('##vso[task.setvariable variable=artifacts;isOutput=true;issecret=false;]{"test-data":"1.0.1","gradle-plugin-test":"1.0.0-SNAPSHOT"}') >= 0, true, "should set variable");
+        assert.strictEqual(tr.stdout.indexOf('##vso[task.setvariable variable=artifacts;isOutput=true;issecret=false;]{"test-data":"1.0.0","gradle-plugin-test":"1.1.1-SNAPSHOT"}') >= 0, true, "should set variable");
     });
 
     it('should succeed with single artifact', async () => {
